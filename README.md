@@ -55,22 +55,22 @@ Total Shipping Volume = SUM(fact_sales[quantity])
 ### 1. Sales Overview
 High-level KPIs, revenue trend vs. last year, sales by category, and revenue split by country.
 
-![Sales Overview](Images/Sales%20Overview.jpg)
+![Sales Overview](Docs/Sales%20Overview.jpg)
 
 ### 2. Product Performance
 Top 10 products, cost vs. sales by category, quantity by subcategory, and a product detail matrix.
 
-![Product Performance](Images/Product%20Performance.jpg)
+![Product Performance](Docs/Product%20Performance.jpg)
 
 ### 3. Customer Insights
 Age & gender breakdown, marital status share, customers by country, and a Top 20 customer table.
 
-![Customer Insights](Images/Customer%20Insights.jpg)
+![Customer Insights](Docs/Customer%20Insights.jpg)
 
 ### 4. Fulfillment & Shipping
 Average shipping days, total shipping volume, regional shipping timelines, and monthly order trends.
 
-![Fulfillment & Shipping](Images/Fulfillment%20&%20Shipping%20Analytics.jpg)
+![Fulfillment & Shipping](Docs/Fulfillment%20&%20Shipping%20Analytics.jpg)
 
 ---
 
@@ -82,11 +82,13 @@ text
 │   ├── gold.dim_products.csv
 │   └── gold.fact_sales.csv
 │
-├── Images/
+├── Docs/
 │   ├── Sales Overview.jpg
 │   ├── Product Performance.jpg
 │   ├── Customer Insights.jpg
-│   └── Fulfillment & Shipping Analytics.jpg
+│   ├── Fulfillment & Shipping Analytics.jpg
+│   ├── data_model.png
+|   └── data_catalog.md
 │
 └── PowerBI/
     └── project_first.pbix
