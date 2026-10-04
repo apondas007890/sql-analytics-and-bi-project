@@ -1,91 +1,27 @@
-# 🔍 Exploration Layer — Exploratory Data Analysis
+# 🔍 Exploratory Data Analysis (EDA)
 
+## What is EDA?
 
->
-> **Exploratory Data Analysis (EDA)** is the process of investigating data to understand its structure, characteristics, distributions, relationships, patterns, and behavior before using it for reporting, dashboards, or advanced analytics.
+**Exploratory Data Analysis (EDA)** means exploring data to understand it before using it for reports, dashboards, or analysis.
 
-The Exploration folder contains the SQL scripts used to **investigate the Gold Layer and understand what the analytical data is telling us**.
-
-Rather than immediately building dashboards or KPIs, we first explore the data and answer questions such as:
-
-```text
-What data do we have?
-        ↓
-How is it structured?
-        ↓
-What does the data contain?
-        ↓
-What does the data look like over time?
-        ↓
-How large are the important measures?
-        ↓
-How do those measures differ across dimensions?
-        ↓
-Who / what performs best or worst?
-        ↓
-What patterns or interesting findings can we discover?
-```
-
----
-
-## 📑 Contents
-
-* [EDA at a Glance](#-eda-at-a-glance)
-* [Where EDA Fits](#️-where-eda-fits)
-* [The EDA Mindset](#-the-eda-mindset)
-* [Exploration Scripts](#-exploration-scripts)
-* [Gold Layer Data](#-gold-layer-data)
-* [01 — Database Exploration](#-01--database-exploration)
-* [02 — Dimension Exploration](#-02--dimension-exploration)
-* [03 — Date Range Exploration](#-03--date-range-exploration)
-* [04 — Measures Exploration](#-04--measures-exploration)
-* [05 — Magnitude Analysis](#-05--magnitude-analysis)
-* [06 — Ranking Analysis](#-06--ranking-analysis)
-* [Beyond Basic Exploration](#-beyond-basic-exploration)
-* [From Query Result to Insight](#-from-query-result-to-insight)
-* [EDA vs Data Quality vs BI](#️-eda-vs-data-quality-vs-bi)
-* [Practical EDA Process](#-practical-eda-process)
-* [Quick Reference](#-quick-reference)
-* [Final Takeaway](#-final-takeaway)
-
----
-
-# 🌟 EDA at a Glance
-
-EDA is **not a single SQL query** and it is not simply “making some charts.”
-
-It is a process of **asking questions, investigating the answers, and developing an understanding of the data**.
-
-### In simple terms:
+In simple words:
 
 > **EDA = Getting to know your data before making decisions from it.**
 
-A typical investigation looks like this:
+EDA helps us understand:
 
-| Stage            | Question                            |
-| ---------------- | ----------------------------------- |
-| 🧩 Structure     | What data exists?                   |
-| 📦 Content       | What values and categories exist?   |
-| 📅 Time          | What period does the data cover?    |
-| 🔢 Measures      | How much / how many?                |
-| 📊 Comparison    | How do values differ across groups? |
-| 🏆 Ranking       | Who or what performs best?          |
-| 🔬 Investigation | Why is something happening?         |
-| 💡 Insight       | What did we learn?                  |
-
-
- EDA focuses on understanding:
-
-        - 📦 Dimensions (categories)
-        - 🔢 Measures (business metrics)
-        - 📅 Date ranges (time coverage)
-        - 📊 Data distribution
-        - 🏆 Rankings
-        - 📈 Business magnitude
+- What data we have
+- How the data is structured
+- What values and categories exist
+- What time period the data covers
+- How large the important numbers are
+- How values differ between groups
+- Which entities perform best or worst
+- What patterns or unusual results exist
 
 ---
 
-# 🏗️ Where EDA Fits
+## 📍 Where EDA Fits
 
 ```text
 Raw Data
@@ -94,49 +30,50 @@ Bronze Layer
    ↓
 Silver Layer
    ↓
-Gold Layer (Business Ready Data)
+Gold Layer
    ↓
-🔍 EDA / Exploration Layer
+EDA / Exploration
    ↓
-BI Dashboards / Reports / Insights
+Dashboards / Reports / Insights
 ```
+
+EDA is usually done on business-ready data, such as the **Gold Layer**.
+
 ---
 
-# 🧠 The EDA Mindset
+# 🧠 EDA Mindset
 
-Good EDA starts with a **question**, not with a SQL function.
+EDA should start with a **question**, not with a SQL function.
 
-Instead of thinking:
-
-```text
-❌ "Which SQL query should I write?"
-```
-
-think:
+Instead of:
 
 ```text
-✅ "What do I want to understand?"
+❌ Which SQL query should I write?
 ```
 
-Then select the SQL technique that can answer that question.
+Think:
+
+```text
+✅ What do I want to understand?
+```
+
+Then choose the SQL technique needed to answer the question.
 
 ### Example
 
-**Business question:**
+Question:
 
 > Which products generate the most revenue?
 
-Translate the question into SQL thinking:
+SQL thinking:
 
 ```text
-Product
-   +
-Revenue
-   ↓
+Product + Revenue
+        ↓
 GROUP BY Product
-   ↓
+        ↓
 SUM(Revenue)
-   ↓
+        ↓
 ORDER BY Revenue DESC
 ```
 
@@ -145,90 +82,61 @@ Another question:
 > How has revenue changed over time?
 
 ```text
-Date
-   +
-Revenue
-   ↓
-Group by Month
-   ↓
+Date + Revenue
+        ↓
+GROUP BY Month
+        ↓
 SUM(Revenue)
-   ↓
+        ↓
 ORDER BY Month
 ```
 
-Another:
+### Main idea
 
-> Who are the top customers?
-
-```text
-Customer
-   +
-Revenue
-   ↓
-SUM(Revenue) by Customer
-   ↓
-Ranking
-   ↓
-Top N
-```
-
-### ⭐ The principle
-
-> **Start with the question → understand the data needed → choose the SQL technique → interpret the result.**
+> **Question → Data needed → SQL technique → Result → Understanding**
 
 ---
+
 # 📂 Exploration Scripts
 
+A common EDA folder can be organized like this:
+
 ```text
-📦 scripts/
+exploration/
 │
-└── 📁 exploration/
-    │
-    │
-    ├── 📄 README.md
-    │
-    ├── 📄 01_database_exploration.sql     # Explore schemas, tables, columns, and metadata
-    │
-    ├── 📄 02_dimension_exploration.sql    # Analyze dimensions and categorical attributes
-    │
-    ├── 📄 03_date_range_exploration.sql   # Analyze historical timelines and date coverage
-    │
-    ├── 📄 04_measures_exploration.sql     # Calculate key business metrics and KPIs
-    │
-    ├── 📄 05_magnitude_analysis.sql       # Compare measures across business dimensions
-    │
-    └── 📄 06_ranking_analysis.sql         # Rank entities based on business performance
+├── README.md
+├── 01_database_exploration.sql
+├── 02_dimension_exploration.sql
+├── 03_date_range_exploration.sql
+├── 04_measures_exploration.sql
+├── 05_magnitude_analysis.sql
+└── 06_ranking_analysis.sql
 ```
 
-| #  | Script                       | Main Question                       |
-| -- | ---------------------------- | ----------------------------------- |
-| 01 | `database_exploration.sql`   | What is available?                  |
-| 02 | `dimension_exploration.sql`  | What categories/entities exist?     |
-| 03 | `date_range_exploration.sql` | What time period do we have?        |
-| 04 | `measures_exploration.sql`   | How much / how many?                |
-| 05 | `magnitude_analysis.sql`     | How does performance differ?        |
-| 06 | `ranking_analysis.sql`       | Who or what performs best/worst?    |
-
-Each script has a distinct analytical responsibility, so the folder stays organized instead of becoming one large SQL file.
+| Script | Main Purpose |
+|---|---|
+| `01_database_exploration.sql` | Understand database structure |
+| `02_dimension_exploration.sql` | Explore categories and entities |
+| `03_date_range_exploration.sql` | Understand time coverage |
+| `04_measures_exploration.sql` | Calculate important numbers |
+| `05_magnitude_analysis.sql` | Compare values across groups |
+| `06_ranking_analysis.sql` | Find top and bottom performers |
 
 ---
 
 # 🥇 Gold Layer Data
 
-The exploration scripts operate on the [Data Warehouse project's](https://github.com/apondas007890/sql-data-warehouse-project) analytical Gold Layer.
+EDA can be performed on the analytical **Gold Layer**.
 
-### Core tables
+Example tables:
 
-| Table                | Type      | Represents                             |
-| -------------------- | ----------| -------------------------------------- |
-| `gold.fact_sales`    | Fact      | Sales transactions / measurable events |
-| `gold.dim_customers` | Dimension | Customer descriptive info              |
-| `gold.dim_products`  | Dimension | Product descriptive info               |
+| Table | Type | Represents |
+|---|---|---|
+| `gold.fact_sales` | Fact | Sales transactions |
+| `gold.dim_customers` | Dimension | Customer information |
+| `gold.dim_products` | Dimension | Product information |
 
-### Simplified model
-![Data Model](../../docs/data_model.png)
-
-This model lets us combine:
+These tables allow us to answer questions such as:
 
 ```text
 Who?       → Customer
@@ -238,35 +146,33 @@ How much?  → Sales / Quantity
 Where?     → Country
 ```
 
-and turn them into analytical questions.
-
 ---
 
 # 🔎 01 — Database Exploration
 
-### Purpose
+## Purpose
 
-Before analyzing business data, first understand **what is available**.
+First understand **what data is available**.
 
-### Investigate
+### Check:
 
-* Schemas
-* Tables
-* Columns
-* Data types
-* Metadata
-* Table structure
+- Schemas
+- Tables
+- Columns
+- Data types
+- Metadata
+- Relationships
 
-### Typical questions
+### Questions
 
 ```text
 What tables exist?
 
 What columns are available?
 
-What data types are being used?
+What data types are used?
 
-Which tables contain the analytical data?
+Which tables contain the data I need?
 
 How are the tables related?
 ```
@@ -285,35 +191,33 @@ Columns
 Relationships
 ```
 
-### Why it matters
+### Why?
 
-You cannot meaningfully analyze a dataset you do not understand.
-
-This step establishes the **map of the data** before deeper exploration begins.
+> You need to understand the data before you can analyze it.
 
 ---
 
 # 🧩 02 — Dimension Exploration
 
-Dimensions provide the **descriptive context** used to group and segment measures.
+**Dimensions** describe the data and are used to group or filter measures.
 
 Examples:
 
 ```text
-👥 Customer
-📦 Product
-🌍 Country
-🏷️ Category
-📂 Subcategory
+Customer
+Product
+Country
+Category
+Subcategory
 ```
 
-### Investigate
+### Check:
 
-* Unique values
-* Categories
-* Geographic attributes
-* Product hierarchy
-* Customer attributes
+- Unique values
+- Categories
+- Countries
+- Product groups
+- Customer attributes
 
 ### Questions
 
@@ -326,12 +230,10 @@ What subcategories exist?
 
 How many unique customers are there?
 
-Are there unexpected category values?
+Are there unexpected values?
 ```
 
 ### Example
-
-Suppose:
 
 ```text
 Category
@@ -342,7 +244,7 @@ Clothing
 Accessories
 ```
 
-Now we can use those categories to investigate:
+We can then analyze:
 
 ```text
 Revenue by Category
@@ -352,25 +254,25 @@ Orders by Category
 
 ### Key idea
 
-> **Dimensions provide the “by what?” part of an analysis.**
+> **Dimension = By what do we want to analyze?**
 
 ---
 
 # 📅 03 — Date Range Exploration
 
-Time gives analytical data its **historical context**.
+Time tells us **when the data happened** and how much historical data we have.
 
-### Investigate
+### Check:
 
 ```text
 Earliest date
 Latest date
 Historical coverage
 Data freshness
-Time gaps
+Possible gaps
 ```
 
-The basic SQL concepts are:
+Common SQL:
 
 ```sql
 MIN(order_date)
@@ -380,54 +282,45 @@ MAX(order_date)
 ### Example
 
 ```text
-First Order
-    ↓
-2019-01-01
-
-Last Order
-    ↓
-2025-12-31
+First Order → 2019-01-01
+Last Order  → 2025-12-31
 ```
 
-Now we know the dataset covers approximately seven years.
+This tells us the available time period.
 
-### Why this matters
+### Why?
 
-Suppose an analyst sees:
+Suppose revenue in December is 50% lower.
+
+Before saying revenue dropped, check:
 
 ```text
-December Revenue ↓ 50%
+Is December complete?
+
+Is some data missing?
+
+Is December only partially loaded?
 ```
 
-EDA should first establish whether:
-
-```text
-December is complete
-        OR
-December contains only partial data
-        OR
-December has missing records
-```
-
-Without temporal context, a valid number can still lead to a wrong interpretation.
+> A number can be correct but still be misunderstood without time context.
 
 ---
 
 # 🔢 04 — Measures Exploration
 
-Measures are the **numbers we want to understand**.
+**Measures** are the numbers we want to understand.
 
-Typical examples:
+Examples:
 
 ```text
-💰 Revenue
-📦 Quantity
-🧾 Orders
-👥 Customers
-💵 Price
+Revenue
+Quantity
+Orders
+Customers
+Price
 ```
 
-### Common operations
+### Common SQL functions
 
 ```sql
 SUM()
@@ -438,80 +331,72 @@ MIN()
 MAX()
 ```
 
-### Typical questions
+### Questions
 
-| Question                  | Example            |
-| ------------------------- | ------------------ |
-| 💰 How much?              | Total Revenue      |
-| 📦 How many units?        | Total Quantity     |
-| 🧾 How many transactions? | Total Orders       |
-| 👥 How many customers?    | Distinct Customers |
-| 💵 What is the average?   | Average Price      |
+| Question | Example |
+|---|---|
+| How much? | Total Revenue |
+| How many units? | Total Quantity |
+| How many orders? | Total Orders |
+| How many customers? | Unique Customers |
+| What is the average? | Average Price |
 
-### The important relationship
+### Important relationship
 
 ```text
-             DIMENSION
-                 +
-              MEASURE
-                 ↓
-          ANALYTICAL QUESTION
+Dimension + Measure
+        ↓
+Analytical Question
 ```
 
 Examples:
 
 ```text
-Country   + Revenue
-Category  + Quantity
-Customer  + Orders
-Product   + Sales
+Country  + Revenue
+Category + Quantity
+Customer + Orders
+Product  + Sales
 ```
 
-A measure by itself gives a number.
+A measure gives a number.
 
-A measure combined with a dimension gives **context**.
+A measure + dimension gives **context**.
 
 ---
 
 # 📊 05 — Magnitude Analysis
 
-Magnitude analysis moves from:
+Magnitude analysis asks:
 
-> **“How much do we have?”**
+> **Where is the total amount coming from?**
 
-to:
-
-> **“Where is that amount coming from?”**
-
-### Example
-
-Overall:
+Example:
 
 ```text
 Total Revenue = $50M
 ```
 
-Magnitude analysis breaks it down:
+Break it down:
 
 ```text
-🌍 Country A   $20M
-🌍 Country B   $15M
-🌍 Country C   $10M
-🌍 Country D    $5M
+Country A → $20M
+Country B → $15M
+Country C → $10M
+Country D → $5M
 ```
 
-Now we can see the relative contribution.
+Now we can see which countries contribute the most.
 
 ### Common analysis
 
 ```text
-Revenue   → by Country
-Revenue   → by Category
-Quantity  → by Product
-Orders    → by Customer
+Revenue  → by Country
+Revenue  → by Category
+Quantity → by Product
+Orders   → by Customer
 ```
 
-### Typical SQL pattern
+### Common SQL pattern
 
 ```sql
 SELECT
@@ -522,12 +407,17 @@ GROUP BY country
 ORDER BY total_sales DESC;
 ```
 
-### Questions answered
+### Questions
 
-* Which country contributes the most?
-* Which category is largest?
-* Which products drive sales?
-* Which customers contribute significant revenue?
+```text
+Which country contributes the most?
+
+Which category is largest?
+
+Which products drive sales?
+
+Which customers contribute the most?
+```
 
 ### Mental model
 
@@ -545,13 +435,13 @@ Understand Contribution
 
 # 🏆 06 — Ranking Analysis
 
-Magnitude analysis tells us the size of each group.
+Magnitude analysis shows the size of each group.
 
-Ranking goes one step further:
+Ranking asks:
 
-> **Who is at the top and who is at the bottom?**
+> **Who or what is at the top or bottom?**
 
-### 🥇 Top-N
+### Examples
 
 ```text
 Top 5 Products by Revenue
@@ -559,7 +449,7 @@ Top 10 Customers by Sales
 Top 5 Countries by Quantity
 ```
 
-### 🔻 Bottom-N
+Bottom examples:
 
 ```text
 Bottom 5 Products by Revenue
@@ -567,7 +457,7 @@ Bottom 10 Customers by Orders
 Lowest-performing Categories
 ```
 
-### SQL tools
+### SQL functions
 
 ```sql
 RANK()
@@ -579,30 +469,32 @@ ROW_NUMBER()
 
 ```text
 Rank   Product       Revenue
-─────────────────────────────
-  1    Product A     $500K
-  2    Product B     $420K
-  3    Product C     $350K
+----------------------------
+1      Product A     $500K
+2      Product B     $420K
+3      Product C     $350K
 ```
 
-### Why ranking is useful
+### Why?
 
-Ranking helps identify:
+Ranking helps find:
 
-* ⭐ leaders
-* ⚠️ weak performers
-* 🎯 areas requiring attention
-* 💼 entities contributing most to the business
+- Top performers
+- Weak performers
+- Areas needing attention
+- Important business contributors
 
 ---
 
 # 📈 Beyond Basic Exploration
 
-The six scripts provide the core exploration workflow, but EDA can go further when a question requires deeper investigation.
+EDA can go deeper when the question requires it.
 
-### 📈 Trend Analysis
+## Trend Analysis
 
-Understand how a measure changes with time.
+Understand how a measure changes over time.
+
+Examples:
 
 ```text
 Revenue by Month
@@ -612,42 +504,41 @@ Quantity by Quarter
 
 ---
 
-### 📊 Distribution Analysis
+## 📊 Distribution Analysis
 
 Understand how values are spread.
 
-For example:
+Questions:
 
 ```text
 Are most customers low-value?
 
-Are sales concentrated among a small number
-of customers?
+Are sales concentrated among a few customers?
 
 Are product prices evenly distributed?
 ```
 
 ---
 
-### 🔗 Relationship Analysis
+## 🔗 Relationship Analysis
 
-Investigate how attributes or measures relate.
+Understand how values or attributes relate.
+
+Examples:
 
 ```text
-Does higher product price correspond
-to lower quantity sold?
+Does higher product price relate to lower quantity sold?
 
-Do high-value customers purchase
-more products?
+Do high-value customers buy more products?
 
 Which categories are commonly purchased?
 ```
 
 ---
 
-### ⚠️ Anomaly Investigation
+## ⚠️ Anomaly Investigation
 
-Investigate values that appear unusual.
+Look for unusual results.
 
 Examples:
 
@@ -655,30 +546,21 @@ Examples:
 Unusually high sales
 Unexpectedly low prices
 Very large quantities
-Unexpected date gaps
-Sudden changes in performance
+Missing date periods
+Sudden performance changes
 ```
 
-### Important distinction
+Important:
 
-Finding something unusual does **not automatically mean the data is wrong**.
-
-It means:
-
-> **“This result deserves investigation.”**
-
-That is an important part of exploratory analysis.
-
+> An unusual value does not automatically mean the data is wrong. It means it should be investigated.
 
 ---
 
 # 💡 From Query Result to Insight
 
-This is one of the most important concepts in EDA.
-
 A **query result is not automatically an insight**.
 
-Suppose the query returns:
+Example result:
 
 ```text
 Category A → $20M
@@ -686,34 +568,27 @@ Category B → $12M
 Category C → $5M
 ```
 
-That is a **result**.
+This tells us:
 
-We can interpret it:
+> Category A has the highest revenue.
 
-> Category A generates the highest revenue.
-
-That is an **observation**.
-
-But good EDA continues:
+But we can ask more:
 
 ```text
 Why is Category A higher?
-          ↓
-Does it contain more products?
-          ↓
+
+Does it have more products?
+
 Does it have more customers?
-          ↓
-Is the average selling price higher?
-          ↓
-Did it always perform this way?
-          ↓
-Is the difference concentrated
-in particular countries?
+
+Is the average price higher?
+
+Has it always performed this way?
+
+Which countries are driving it?
 ```
 
-Now we are investigating the **reason behind the result**.
-
-### 🧠 Think of it as:
+The process is:
 
 ```text
 SQL Result
@@ -726,48 +601,60 @@ Further Exploration
     ↓
 Finding
     ↓
-💡 Insight
+Insight
 ```
 
-> **EDA is the process of turning data into understanding.**
+> **EDA turns data results into understanding.**
 
 ---
 
 # ⚖️ EDA vs Data Quality vs BI
 
-These concepts often get mixed together, but they have different purposes.
+These are related but have different purposes.
 
-| Activity        | Main Question                   | Example                                    |
-| --------------- | ------------------------------- | ------------------------------------------ |
-| 🧪 Data Quality | Is the data valid?              | Are there duplicate keys?                  |
-| 🔍 EDA          | What does the data tell us?     | Which category generates the most revenue? |
-| 📊 BI           | How do we monitor the business? | Monthly Revenue dashboard                  |
+| Activity | Main Question | Example |
+|---|---|---|
+| Data Quality | Is the data valid? | Are there duplicate keys? |
+| EDA | What is happening in the data? | Which category has the most revenue? |
+| BI | How do we monitor the business? | Monthly Revenue Dashboard |
 
-### 🧪 Data Quality
+## 🧪 Data Quality
 
-Focuses on predefined rules:
+Checks whether data follows expected rules.
+
+Examples:
 
 ```text
 Is the primary key unique?
+
 Are required fields NULL?
+
 Are foreign keys valid?
+
 Are dates valid?
 ```
 
-### 🔍 EDA
+## 🔍 EDA
 
-Focuses on investigation:
+Explores and investigates the data.
+
+Examples:
 
 ```text
 Which customers generate the most revenue?
+
 What patterns exist?
+
 Which category dominates?
+
 What changed over time?
 ```
 
-### 📊 BI
+## 📊 BI
 
-Focuses on repeatable communication:
+Communicates and monitors business information.
+
+Examples:
 
 ```text
 Revenue KPI
@@ -777,20 +664,16 @@ Sales by Country
 Top Products
 ```
 
-### The simplest way to remember:
+### Easy way to remember
 
 ```text
-🧪 Data Quality
+Data Quality
 "Is the data valid?"
-
         ↓
-
-🔍 EDA
-"What is happening in the data?"
-
+EDA
+"What is happening?"
         ↓
-
-📊 BI
+BI
 "How do we monitor and communicate it?"
 ```
 
@@ -798,23 +681,27 @@ Top Products
 
 # 🚶 Practical EDA Process
 
-When approaching a new analytical dataset, use this workflow.
+When working with a new dataset, follow these steps.
 
-### 1. 🗺️ Understand the model
+## 1. Understand the Data Model
 
-Determine:
+Ask:
 
 ```text
 What does each table represent?
+
 What does one row represent?
+
 What are the dimensions?
+
 What are the measures?
-How are tables related?
+
+How are the tables related?
 ```
 
 ---
 
-### 2. 🗄️ Inspect the structure
+## 2. Inspect the Structure
 
 Check:
 
@@ -829,9 +716,9 @@ Relationships
 
 ---
 
-### 3. 🧩 Explore dimensions
+## 3. Explore Dimensions
 
-Look at:
+Check:
 
 ```text
 Unique categories
@@ -841,11 +728,11 @@ Customers
 Segments
 ```
 
-Pay attention to unexpected values.
+Look for unexpected values.
 
 ---
 
-### 4. 📅 Establish the time context
+## 4. Check the Time Period
 
 Find:
 
@@ -858,9 +745,9 @@ Possible gaps
 
 ---
 
-### 5. 🔢 Calculate the major measures
+## 5. Calculate Main Measures
 
-Start with the overall picture:
+Start with the overall numbers:
 
 ```text
 Total Revenue
@@ -872,7 +759,7 @@ Average Price
 
 ---
 
-### 6. 📊 Break the numbers down
+## 6. Break Down the Numbers
 
 Move from:
 
@@ -891,7 +778,7 @@ Revenue by Customer
 
 ---
 
-### 7. 🏆 Rank important entities
+## 7. Rank Important Entities
 
 Find:
 
@@ -905,123 +792,141 @@ Bottom Customers
 
 ---
 
-### 8. 🔬 Investigate interesting results
+## 8. Investigate Interesting Results
 
-Whenever something stands out, ask:
+When something stands out, ask:
 
 ```text
 Why?
+
 When?
+
 Where?
+
 Who contributed?
+
 What changed?
+
 Is the pattern consistent?
 ```
 
 ---
 
-### 9. 💡 Form an insight
+## 9. Form an Insight
 
-Do not simply copy the SQL output.
+Do not just copy the SQL output.
 
-Explain what it means.
+Explain what the result means.
+
+Example:
 
 ```text
 Result:
 Country A → $20M revenue
 
-Interpretation:
-Country A generates the largest revenue contribution.
+Meaning:
+Country A generates the highest revenue.
 
-Further question:
-What products and customers are driving that performance?
+Next question:
+Which products and customers are driving it?
 ```
 
 ---
 
-### 10. 📊 Feed the findings downstream
+## 10. Use the Findings
 
-The exploration can influence:
+EDA findings can help with:
 
 ```text
-                🔍 EDA
-                  │
-                  ▼
-               💡 Insights
-                  │
-          ┌───────┴────────┐
-          ▼                ▼
-      📊 Dashboard     📈 Further
-        Design          Analysis
-          │
-          ▼
-       💼 Decisions
+EDA
+ ↓
+Insights
+ ↓
+ ┌───────────────┐
+ ↓               ↓
+Dashboard    Further Analysis
+ ↓
+Business Decisions
 ```
 
 ---
 
-# 🧭 A Simple Question Framework
+# 🧭 Simple EDA Question Framework
 
-When you are unsure how to start EDA, move through these questions:
+When you do not know where to start, ask these questions:
 
 ```text
-┌────────────────────────────────────┐
-│ 🗄️ WHAT DATA DO WE HAVE?           │
-└──────────────────┬─────────────────┘
-                   ↓
-┌────────────────────────────────────┐
-│ 🧩 WHAT DOES EACH TABLE REPRESENT? │
-└──────────────────┬─────────────────┘
-                   ↓
-┌────────────────────────────────────┐
-│ 📦 WHAT VALUES / CATEGORIES EXIST? │
-└──────────────────┬─────────────────┘
-                   ↓
-┌────────────────────────────────────┐
-│ 📅 WHAT TIME PERIOD IS AVAILABLE?  │
-└──────────────────┬─────────────────┘
-                   ↓
-┌────────────────────────────────────┐
-│ 🔢 WHAT ARE THE MAIN MEASURES?     │
-└──────────────────┬─────────────────┘
-                   ↓
-┌────────────────────────────────────┐
-│ 📊 HOW DO THEY DIFFER BY GROUP?    │
-└──────────────────┬─────────────────┘
-                   ↓
-┌────────────────────────────────────┐
-│ 🏆 WHO / WHAT PERFORMS BEST?       │
-└──────────────────┬─────────────────┘
-                   ↓
-┌────────────────────────────────────┐
-│ 🔬 WHAT IS INTERESTING / UNUSUAL?  │
-└──────────────────┬─────────────────┘
-                   ↓
-┌────────────────────────────────────┐
-│ 💡 WHAT DID WE LEARN?              │
-└────────────────────────────────────┘
+1. What data do we have?
+
+2. What does each table represent?
+
+3. What values and categories exist?
+
+4. What time period is available?
+
+5. What are the main measures?
+
+6. How do the measures differ by group?
+
+7. Who or what performs best?
+
+8. What looks interesting or unusual?
+
+9. What did we learn?
 ```
 
-This prevents EDA from becoming random SQL experimentation.
+This keeps EDA focused instead of becoming random SQL queries.
 
 ---
 
 # 📌 Quick Reference
 
-| Need to understand...        | Start with...                          |
-| ---------------------------- | -------------------------------------- |
-| 🗄️ Database structure       | Metadata / catalog queries             |
-| 🧩 Categories                | `DISTINCT`                             |
-| 📅 Date boundaries           | `MIN()` / `MAX()`                      |
-| 💰 Total revenue             | `SUM()`                                |
-| 🧾 Number of orders          | `COUNT()`                              |
-| 👥 Unique customers          | `COUNT(DISTINCT ...)`                  |
-| 💵 Average price             | `AVG()`                                |
-| 🌍 Performance by country    | `GROUP BY country`                     |
-| 📦 Performance by category   | `GROUP BY category`                    |
-| 🏆 Top performers            | `ORDER BY ... DESC`                    |
-| 🥇 Ranking                   | `RANK()` / `DENSE_RANK()`              |
-| 🔗 Combine business entities | `JOIN`                                 |
-| 🧠 Complex analysis          | CTEs / subqueries                      |
-| 📈 Trends                    | Date + aggregation                     |
-| ⚠️ Unusual behavior          | Filtering + comparison + investigation |
+| Need to understand | Start with |
+|---|---|
+| Database structure | Metadata / catalog queries |
+| Categories | `DISTINCT` |
+| Date range | `MIN()` / `MAX()` |
+| Total revenue | `SUM()` |
+| Number of orders | `COUNT()` |
+| Unique customers | `COUNT(DISTINCT ...)` |
+| Average price | `AVG()` |
+| Performance by country | `GROUP BY country` |
+| Performance by category | `GROUP BY category` |
+| Top performers | `ORDER BY ... DESC` |
+| Ranking | `RANK()` / `DENSE_RANK()` |
+| Combine tables | `JOIN` |
+| Complex analysis | CTEs / subqueries |
+| Trends | Date + aggregation |
+| Unusual behavior | Filtering + comparison |
+
+---
+
+# 🎯 Final Takeaway
+
+```text
+EDA = Understand the data before using it for decisions.
+```
+
+The basic flow is:
+
+```text
+Understand Structure
+        ↓
+Explore Dimensions
+        ↓
+Check Time
+        ↓
+Calculate Measures
+        ↓
+Compare Groups
+        ↓
+Rank Results
+        ↓
+Investigate Interesting Findings
+        ↓
+Create Insights
+```
+
+### Remember
+
+> **Start with a question, explore the data, understand the result, and then form an insight.**
